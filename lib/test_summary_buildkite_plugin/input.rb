@@ -6,7 +6,7 @@ require 'rexml/document'
 
 module TestSummaryBuildkitePlugin
   module Input
-    WORKDIR = 'tmp/test-summary'
+    WORKDIR = "/tmp/test-summary/#{ENV['BUILDKITE_BUILD_ID']}"
     DEFAULT_JOB_ID_REGEX = /(?<job_id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/
 
     def self.create(type:, **options)
