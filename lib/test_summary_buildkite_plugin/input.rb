@@ -7,7 +7,7 @@ require 'rexml/document'
 
 module TestSummaryBuildkitePlugin
   module Input
-    WORKDIR = Dir.tmpdir()
+    WORKDIR = Dir.mktmpdir
     DEFAULT_JOB_ID_REGEX = /(?<job_id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/
 
     def self.create(type:, **options)
