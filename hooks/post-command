@@ -4,8 +4,6 @@ set -eEuo pipefail
 
 DOCKER_REPO=bugcrowd/test-summary-buildkite-plugin
 
-# cd to plugin directory
-pushd "$( dirname "${BASH_SOURCE[0]}" )/.."
 
 on_failure() {
     echo "Command failed with exit status: $?"
@@ -15,16 +13,13 @@ on_failure() {
     fi
 }
 
-on_exit() {
-  popd
-}
-
 trap on_failure ERR
-trap on_exit EXIT
+
+PLUGIN_BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
 
 if [[ ${BUILDKITE_PLUGIN_TEST_SUMMARY_RUN_WITHOUT_DOCKER:-false} = true ]]; then
-    ./bin/setup
-    ./bin/run
+    $PLUGIN_BASEDIR/bin/setup
+    $PLUGIN_BASEDIR/bin/run
 else
     TAG=$(git describe --tags --exact-match 2> /dev/null || true)
 
@@ -35,7 +30,7 @@ else
     else
         echo "No tag found, building image locally"
         IMAGE=test-summary:$BUILDKITE_JOB_ID
-        docker build -t "$IMAGE" .
+        docker build -t "$IMAGE" $PLUGIN_BASEDIR
     fi
 
     docker run --rm \
