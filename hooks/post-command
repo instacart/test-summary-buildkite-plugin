@@ -15,7 +15,7 @@ on_failure() {
 trap on_failure ERR
 
 # cd to plugin directory
-cd "$( dirname "${BASH_SOURCE[0]}" )/.."
+pushd "$( dirname "${BASH_SOURCE[0]}" )/.."
 
 if [[ ${BUILDKITE_PLUGIN_TEST_SUMMARY_RUN_WITHOUT_DOCKER:-false} = true ]]; then
     ./bin/setup
@@ -41,3 +41,5 @@ else
       -e HTTP_PROXY -e HTTPS_PROXY \
       $IMAGE
 fi
+
+popd
