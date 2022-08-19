@@ -41,5 +41,3 @@ else
       -e HTTP_PROXY -e HTTPS_PROXY \
       $IMAGE
 fi
-
-popd
