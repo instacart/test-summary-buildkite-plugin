@@ -4,6 +4,9 @@ set -eEuo pipefail
 
 DOCKER_REPO=bugcrowd/test-summary-buildkite-plugin
 
+# cd to plugin directory
+pushd "$( dirname "${BASH_SOURCE[0]}" )/.."
+
 on_failure() {
     echo "Command failed with exit status: $?"
     if [[ "${BUILDKITE_PLUGIN_TEST_SUMMARY_FAIL_ON_ERROR:-false}" != "true" ]]; then
@@ -12,10 +15,12 @@ on_failure() {
     fi
 }
 
-trap on_failure ERR
+on_exit() {
+  popd
+}
 
-# cd to plugin directory
-pushd "$( dirname "${BASH_SOURCE[0]}" )/.."
+trap on_failure ERR
+trap on_exit EXIT
 
 if [[ ${BUILDKITE_PLUGIN_TEST_SUMMARY_RUN_WITHOUT_DOCKER:-false} = true ]]; then
     ./bin/setup
