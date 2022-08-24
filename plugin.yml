@@ -14,6 +14,8 @@ configuration:
             type: string
           artifact_path:
             type: string
+          path:
+            type: string
           type:
             type: string
             enum:
@@ -46,8 +48,12 @@ configuration:
             additionalProperties: false
         required:
           - label
-          - artifact_path
           - type
+        oneOf:
+          - required:
+            - artifact_path
+          - required:
+            - path
         additionalProperties: false
     formatter:
       type: object

@@ -17,11 +17,12 @@ module TestSummaryBuildkitePlugin
     end
 
     class Base
-      attr_reader :label, :artifact_path, :options
+      attr_reader :label, :artifact_path, :path, :options
 
-      def initialize(label:, artifact_path:, **options)
+      def initialize(label:, artifact_path: nil, path: nil, **options)
         @label = label
         @artifact_path = artifact_path
+        @path = path
         @options = options
       end
 
@@ -38,8 +39,14 @@ module TestSummaryBuildkitePlugin
       def files
         @files ||= begin
           FileUtils.mkpath(WORKDIR)
-          Agent.run('artifact', 'download', artifact_path, WORKDIR)
-          Dir.glob("#{WORKDIR}/#{artifact_path}")
+          if artifact_path
+            Agent.run('artifact', 'download', artifact_path, WORKDIR)
+            Dir.glob("#{WORKDIR}/#{artifact_path}")
+          elsif path
+            File.expand_path(path)
+          else
+            raise "Need to specify path or artifact_path for each input"
+          end
         rescue Agent::CommandFailed => err
           handle_error(err)
           []
