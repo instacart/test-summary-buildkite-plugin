@@ -43,11 +43,13 @@ module TestSummaryBuildkitePlugin
             Agent.run('artifact', 'download', artifact_path, WORKDIR)
             Dir.glob("#{WORKDIR}/#{artifact_path}")
           elsif path
-            Dir.glob(path)
+            matches = Dir.glob(path)
+            raise "path pattern #{path} matches no files" if matches.empty?
+            matches
           else
             raise "Need to specify path or artifact_path for each input"
           end
-        rescue Agent::CommandFailed => err
+        rescue => err
           handle_error(err)
           []
         end
