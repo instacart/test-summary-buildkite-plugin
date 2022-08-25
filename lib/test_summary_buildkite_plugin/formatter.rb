@@ -19,7 +19,6 @@ module TestSummaryBuildkitePlugin
       end
 
       def markdown(input)
-        puts(input.failures)
         return nil if input.failures.count.zero?
         [heading(input), input_markdown(input), footer(input)].compact.join("\n\n")
       end
@@ -83,6 +82,7 @@ module TestSummaryBuildkitePlugin
         # So we need to ensure we don't have any of those in the middle of our html
         #
         # See https://spec.commonmark.org/0.28/#html-blocks
+        puts("Doing the template for #{params}")
         HamlRender.render(name, params, folder: type)&.gsub(/\n\n+/, "\n&nbsp;\n")
       end
     end
