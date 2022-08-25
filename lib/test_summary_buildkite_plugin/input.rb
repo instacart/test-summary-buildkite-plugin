@@ -44,7 +44,8 @@ module TestSummaryBuildkitePlugin
             Dir.glob("#{WORKDIR}/#{artifact_path}")
           elsif path
             matches = Dir.glob(path)
-            raise "path pattern #{path} matches no files" if matches.empty?
+            puts(matches)
+            raise "path pattern #{path} for label #{label} matches no files" if matches.empty?
             matches
           else
             raise "Need to specify path or artifact_path for each input"
