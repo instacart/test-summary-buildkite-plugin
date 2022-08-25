@@ -19,6 +19,7 @@ module TestSummaryBuildkitePlugin
       end
 
       def markdown(input)
+        puts(input.failures)
         return nil if input.failures.count.zero?
         [heading(input), input_markdown(input), footer(input)].compact.join("\n\n")
       end
