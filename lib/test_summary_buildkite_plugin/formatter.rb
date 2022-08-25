@@ -8,7 +8,7 @@ module TestSummaryBuildkitePlugin
       options[:type] ||= 'details'
       type = options[:type].to_sym
       raise "Unknown type: #{type}" unless TYPES.key?(type)
-      TYPES[type].new(**options)
+      TYPES[type].new(options)
     end
 
     class Base
