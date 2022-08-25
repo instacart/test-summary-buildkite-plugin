@@ -13,11 +13,7 @@ module TestSummaryBuildkitePlugin
     def self.create(type:, **options)
       type = type.to_sym
       raise StandardError, "Unknown file type: #{type}" unless TYPES.key?(type)
-      TYPES[type].new(options)
-    end
-
-    def self.clean_up
-      FileUtils.rm_rf(WORKDIR)
+      TYPES[type].new(**options)
     end
 
     class Base
