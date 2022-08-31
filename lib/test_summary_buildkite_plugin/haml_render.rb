@@ -7,6 +7,8 @@ module TestSummaryBuildkitePlugin
       if filename
         engine = Haml::Engine.new(File.read(filename), escape_html: true)
         engine.render(Object.new, params)
+      else
+        Utils.log_error("Cannot find template with name #{name}")
       end
     end
   end
