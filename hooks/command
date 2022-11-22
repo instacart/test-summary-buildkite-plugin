@@ -2,6 +2,6 @@
 
 set -euo pipefail
 
-if [[ "${BUILDKITE_COMMAND}" ]]; then
+if [[ -n "${BUILDKITE_COMMAND}" ]]; then
     eval "${BUILDKITE_COMMAND}"
 fi
