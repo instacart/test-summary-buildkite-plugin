@@ -10,5 +10,8 @@ trap on_failure ERR
 
 # if there are no artifacts uploaded from the step, the post-artifact hook won't be run
 if [[ -n "${BUILDKITE_ARTIFACT_PATHS}" ]]; then
+    echo "Running test-summary in post-artifact since step 'artifact_paths' were found"
     run_plugin
+else
+    echo "Skipping since plugin was run in post-command"
 fi

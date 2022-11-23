@@ -8,5 +8,8 @@ source "${PLUGIN_BASEDIR}/lib/helpers.bash"
 
 # if there are no artifacts uploaded from the step, the post-artifact hook won't be run
 if [[ -z "${BUILDKITE_ARTIFACT_PATHS}" ]]; then
+    echo "Running test-summary in post-command since step 'artifact_paths' were not found"
     run_plugin
+else
+    echo "Skipping, plugin will be run in post-artifact since since step 'artifact_paths' were found"
 fi
