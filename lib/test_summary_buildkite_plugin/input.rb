@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'tmpdir'
 require 'json'
+require 'ostruct'
 
 # We don't use nokogiri because we use an alpine-based docker image
 # And adding the required dependencies triples the size of the image

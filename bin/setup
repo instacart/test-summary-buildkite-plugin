@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+BUNDLE_WITHOUT="development,test"
+BUNDLE_FROZEN="true"
 bundle install --quiet

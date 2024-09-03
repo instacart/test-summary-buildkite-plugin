@@ -1,4 +1,4 @@
-FROM ruby:2.7.6-alpine
+FROM ruby:3.3.0-alpine
 
 # Fetch/install gems
 RUN mkdir -p /opt/gems
