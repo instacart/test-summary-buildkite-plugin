@@ -10,10 +10,11 @@ function on_failure() {
 
 function run_plugin() {
     if [[ "${BUILDKITE_PLUGIN_TEST_SUMMARY_RUN_WITHOUT_DOCKER:-false}" = "true" ]]; then
-        PLUGIN_BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
-        [[ -n `which rbenv` ]] && rbenv shell $(cat $PLUGIN_BASEDIR/.ruby-version)
-        BUNDLE_GEMFILE="$PLUGIN_BASEDIR/Gemfile" "$PLUGIN_BASEDIR/bin/setup"
-        BUNDLE_GEMFILE="$PLUGIN_BASEDIR/Gemfile" bundler exec "$PLUGIN_BASEDIR/bin/run"
+        export PLUGIN_BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+        export BUNDLE_GEMFILE="$PLUGIN_BASEDIR/Gemfile"
+        export RBENV_VERSION=$(cat $PLUGIN_BASEDIR/.ruby-version)
+        "$PLUGIN_BASEDIR/bin/setup"
+        bundle exec "$PLUGIN_BASEDIR/bin/run"
     else
         DOCKER_REPO="bugcrowd/test-summary-buildkite-plugin"
         TAG=$(git describe --tags --exact-match 2> /dev/null || true)
