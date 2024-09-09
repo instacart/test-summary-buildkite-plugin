@@ -29,7 +29,7 @@ function run_plugin() {
         fi
 
         docker run --rm \
-        --mount type=bind,src="$(command -v buildkite-agent)",dst=/usr/bin/buildkite-agent \
+        --mount type=bind,src="$(command -v buildkite-agent)",dst=/usr/local/bin/buildkite-agent \
         --mount type=bind,src=/tmp,dst=/tmp \
         -e BUILDKITE_BUILD_ID -e BUILDKITE_JOB_ID -e BUILDKITE_PLUGINS \
         -e BUILDKITE_AGENT_ID -e BUILDKITE_AGENT_ACCESS_TOKEN -e BUILDKITE_AGENT_ENDPOINT   \
