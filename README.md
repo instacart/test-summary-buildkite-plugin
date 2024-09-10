@@ -57,8 +57,11 @@ Add a build step using the test-summary plugin:
 
 ```yaml
   - label: annotate
+    command: echo # Need something here
+    soft_fail: true
     plugins:
       - instacart/test-summary#v1.18.0:
+          run_without_docker: true
           inputs:
             - label: RSpec
               artifact_path: artifacts/rspec*
