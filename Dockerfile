@@ -1,10 +1,12 @@
-FROM ruby:3.3.0-alpine
+FROM ruby:3.3-alpine
 
 # Fetch/install gems
 RUN mkdir -p /opt/gems
 COPY Gemfile Gemfile.lock /opt/gems/
 WORKDIR /opt/gems
-RUN bundle install --deployment --without development
+RUN bundle config set --local deployment true && \
+    bundle config set --local without development && \
+    bundle install
 
 ENV APP_DIR=/usr/src/app
 

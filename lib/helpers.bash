@@ -16,7 +16,7 @@ function run_plugin() {
         "$PLUGIN_BASEDIR/bin/setup"
         bundle exec "$PLUGIN_BASEDIR/bin/run"
     else
-        DOCKER_REPO="bugcrowd/test-summary-buildkite-plugin"
+        DOCKER_REPO="instacart/test-summary-buildkite-plugin"
         TAG=$(git describe --tags --exact-match 2> /dev/null || true)
 
         if [[ -n "$TAG" ]]; then

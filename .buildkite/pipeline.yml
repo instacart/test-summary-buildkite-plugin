@@ -18,7 +18,7 @@ steps:
   - label: ":sparkles: plugin lint"
     plugins:
       - plugin-linter#v2.0.0:
-          id: bugcrowd/test-summary
+          id: instacart/test-summary
 
   - label: ":arrow_up: artifacts"
     command: buildkite-agent artifact upload spec/sample_artifacts/**/*
@@ -28,7 +28,7 @@ steps:
 
   - label: ":pencil: annotate"
     plugins:
-      - bugcrowd/test-summary#@VERSION@:
+      - instacart/test-summary#@VERSION@:
           inputs:
             - label: ":rspec: rspec"
               artifact_path: artifacts/rspec.xml
@@ -43,7 +43,7 @@ steps:
 
   - label: ":pencil: summary"
     plugins:
-      - bugcrowd/test-summary#@VERSION@:
+      - instacart/test-summary#@VERSION@:
           inputs:
             - label: ":rspec: rspec"
               artifact_path: spec/sample_artifacts/rspec*
@@ -82,7 +82,7 @@ steps:
   # Add test summary, including failure details
   - label: ":pencil: details"
     plugins:
-      - bugcrowd/test-summary#@VERSION@:
+      - instacart/test-summary#@VERSION@:
           inputs:
             - label: ":rspec: rspec"
               artifact_path: spec/sample_artifacts/rspec*

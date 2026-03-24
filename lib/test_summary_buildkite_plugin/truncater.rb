@@ -67,7 +67,7 @@ module TestSummaryBuildkitePlugin
     def bug_report_message
       puts
       puts 'Optimization failed 😱'
-      puts 'Please report this to https://github.com/bugcrowd/test-summary-buildkite-plugin/issues'
+      puts 'Please report this to https://github.com/instacart/test-summary-buildkite-plugin/issues'
       puts 'with the test log above and the details below.'
       puts JSON.pretty_generate(diagnostics)
       HamlRender.render('truncater_exception', {})

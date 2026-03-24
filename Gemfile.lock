@@ -69,7 +69,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 2.3)
   commonmarker
   haml
   json
@@ -81,4 +80,4 @@ DEPENDENCIES
   simplecov
 
 BUNDLED WITH
-   2.4.16
+  4.0.8
