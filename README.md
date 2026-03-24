@@ -60,7 +60,7 @@ Add a build step using the test-summary plugin:
     command: echo # Need something here
     soft_fail: true
     plugins:
-      - instacart/test-summary#v1.18.0:
+      - instacart/test-summary#v1.19.0:
           run_without_docker: true
           inputs:
             - label: RSpec
