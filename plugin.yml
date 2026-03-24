@@ -1,6 +1,6 @@
 name: Test Summary
 description: Collates test results as a buildkite annotation
-author: "@tessereth"
+author: https://github.com/instacart
 requirements:
   - docker
 configuration:

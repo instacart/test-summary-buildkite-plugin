@@ -4,7 +4,7 @@ steps:
     timeout: 5
     artifact_paths: "artifacts/*"
     plugins:
-      - docker-compose#v2.4.0:
+      - docker-compose#v5.5.0:
           run: test
 
   - label: ":rubocop: rubocop"
@@ -12,12 +12,12 @@ steps:
     timeout: 5
     artifact_paths: "artifacts/*"
     plugins:
-      - docker-compose#v2.4.0:
+      - docker-compose#v5.5.0:
           run: test
 
   - label: ":sparkles: plugin lint"
     plugins:
-      - plugin-linter#v2.0.0:
+      - plugin-linter#v4.1.0:
           id: instacart/test-summary
 
   - label: ":arrow_up: artifacts"

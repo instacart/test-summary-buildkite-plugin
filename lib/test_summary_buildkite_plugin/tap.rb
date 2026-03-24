@@ -27,14 +27,13 @@ module TestSummaryBuildkitePlugin
       end
     end
 
-    Test = Struct.new(:passed, :description, :directive, :todo, :skipped, :diagnostic, :yaml,
-                      keyword_init: true)
+    Test = Struct.new(:passed, :description, :directive, :todo, :skipped, :diagnostic, :yaml)
 
     class Parser
       PATTERNS = {
         plan: /^(?<start>\d+)\.\.(?<end>\d+)/,
         test:
-          /^(?<not>not )?ok(?<number> \d+)?(?<description>[^#]*)(#\s*(?<directive>((?<todo>TODO)|(?<skip>SKIP))?.*))?/i,
+          /^(?<not>not )?ok(?<number> \d+)?(?<description>[^#]*)(?:#\s*(?<directive>(?:(?<todo>TODO)|(?<skip>SKIP))?.*))?/i,
         comment: /^#(?<comment>.*)$/,
         yaml_start: /^\s+---/,
         yaml_end: /^\s+\.\.\./,
@@ -121,7 +120,7 @@ module TestSummaryBuildkitePlugin
           nil
         else
           indent = lines.first.match(/(\s*)/)[1].length
-          lines.map { |line| line[indent..-1] }.join("\n")
+          lines.map { |line| line[indent..] }.join("\n")
         end
       end
     end

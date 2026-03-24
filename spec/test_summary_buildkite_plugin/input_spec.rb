@@ -30,7 +30,7 @@ RSpec.describe TestSummaryBuildkitePlugin::Input do
 
     it 'failure summary includes whole line' do
       expect(input.failures.first.summary).to eq(
-        '/Users/foo/test-summary-buildkite-plugin/lib/test_summary_buildkite_plugin/agent.rb:22:7: '\
+        '/Users/foo/test-summary-buildkite-plugin/lib/test_summary_buildkite_plugin/agent.rb:22:7: ' \
         'C: Style/GuardClause: Use a guard clause instead of wrapping the code inside a conditional expression.'
       )
     end
