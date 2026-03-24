@@ -19,6 +19,7 @@ module TestSummaryBuildkitePlugin
         # we can use it as-is, no need to truncate
         return requested
       end
+
       puts "Markdown is too large (#{requested.bytesize} B > #{max_size} B), truncating"
 
       # See http://ruby-doc.org/core/Array.html#method-i-bsearch
@@ -35,6 +36,7 @@ module TestSummaryBuildkitePlugin
         # so ask the user to let us know
         return bug_report_message
       end
+
       puts "Optimal truncation: #{best_truncate}"
       markdown_with_truncation(best_truncate)
     end

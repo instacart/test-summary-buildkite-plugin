@@ -11,9 +11,11 @@ RSpec.describe TestSummaryBuildkitePlugin::Runner do
   context 'with no failures' do
     let(:inputs) do
       [
-        label: 'rspec',
-        type: 'junit',
-        artifact_path: 'foo'
+        {
+          label: 'rspec',
+          type: 'junit',
+          artifact_path: 'foo'
+        }
       ]
     end
 
@@ -26,9 +28,11 @@ RSpec.describe TestSummaryBuildkitePlugin::Runner do
   context 'with failures' do
     let(:inputs) do
       [
-        label: 'rspec',
-        type: 'junit',
-        artifact_path: 'rspec*'
+        {
+          label: 'rspec',
+          type: 'junit',
+          artifact_path: 'rspec*'
+        }
       ]
     end
 

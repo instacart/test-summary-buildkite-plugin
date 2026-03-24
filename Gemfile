@@ -3,8 +3,8 @@
 source 'https://rubygems.org'
 
 gem 'haml'
-gem 'rexml'
 gem 'json'
+gem 'rexml'
 
 group :development, :test do
   gem 'rake', '~> 13.0'

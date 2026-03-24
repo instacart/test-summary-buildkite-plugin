@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'tmpdir'
 require 'json'
 require 'ostruct'
@@ -15,6 +16,7 @@ module TestSummaryBuildkitePlugin
     def self.create(type:, **options)
       type = type.to_sym
       raise StandardError, "Unknown file type: #{type}" unless TYPES.key?(type)
+
       TYPES[type].new(**options)
     end
 
@@ -42,8 +44,8 @@ module TestSummaryBuildkitePlugin
           FileUtils.mkpath(WORKDIR)
           Agent.run('artifact', 'download', artifact_path, WORKDIR)
           Dir.glob("#{WORKDIR}/#{artifact_path}")
-        rescue Agent::CommandFailed => err
-          handle_error(err)
+        rescue Agent::CommandFailed => e
+          handle_error(e)
           []
         end
       end
@@ -62,8 +64,8 @@ module TestSummaryBuildkitePlugin
 
       def filename_to_failures(filename)
         file_contents_to_failures(read(filename)).each { |failure| failure.job_id = job_id(filename) }
-      rescue StandardError => err
-        handle_error(err)
+      rescue StandardError => e
+        handle_error(e)
         []
       end
 
@@ -75,6 +77,7 @@ module TestSummaryBuildkitePlugin
         if @options[:job_id_regex]
           r = Regexp.new(@options[:job_id_regex])
           raise 'Job id regex must have a job_id named capture' unless r.names.include?('job_id')
+
           r
         else
           DEFAULT_JOB_ID_REGEX
