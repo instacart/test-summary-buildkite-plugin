@@ -8,6 +8,7 @@ module TestSummaryBuildkitePlugin
       options[:type] ||= 'details'
       type = options[:type].to_sym
       raise "Unknown type: #{type}" unless TYPES.key?(type)
+
       TYPES[type].new(options)
     end
 
@@ -19,7 +20,8 @@ module TestSummaryBuildkitePlugin
       end
 
       def markdown(input)
-        return nil if input.failures.count.zero?
+        return nil if input.failures.none?
+
         [heading(input), input_markdown(input), footer(input)].compact.join("\n\n")
       end
 
@@ -32,7 +34,7 @@ module TestSummaryBuildkitePlugin
           details('Show failures', failures_markdown(include_failures(input)))
         else
           failures_markdown(include_failures(input)[0...show_first]) +
-            details('Show additional failures', failures_markdown(include_failures(input)[show_first..-1]))
+            details('Show additional failures', failures_markdown(include_failures(input)[show_first..]))
         end
       end
 
@@ -49,7 +51,7 @@ module TestSummaryBuildkitePlugin
       end
 
       def footer(input)
-        job_ids = input.failures.map(&:job_id).uniq.reject(&:nil?)
+        job_ids = input.failures.map(&:job_id).uniq.compact
         render_template('footer', job_ids: job_ids)
       end
 

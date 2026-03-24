@@ -1,7 +1,8 @@
 # frozen_string_literal: true
+
 require 'tmpdir'
 require 'json'
-require 'ostruct'
+CropRange = Struct.new(:start, :end)
 
 # We don't use nokogiri because we use an alpine-based docker image
 # And adding the required dependencies triples the size of the image
@@ -12,10 +13,11 @@ module TestSummaryBuildkitePlugin
     WORKDIR = Dir.mktmpdir
     DEFAULT_JOB_ID_REGEX = /(?<job_id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/
 
-    def self.create(type:, **options)
+    def self.create(type:, **)
       type = type.to_sym
       raise StandardError, "Unknown file type: #{type}" unless TYPES.key?(type)
-      TYPES[type].new(**options)
+
+      TYPES[type].new(**)
     end
 
     class Base
@@ -42,8 +44,8 @@ module TestSummaryBuildkitePlugin
           FileUtils.mkpath(WORKDIR)
           Agent.run('artifact', 'download', artifact_path, WORKDIR)
           Dir.glob("#{WORKDIR}/#{artifact_path}")
-        rescue Agent::CommandFailed => err
-          handle_error(err)
+        rescue Agent::CommandFailed => e
+          handle_error(e)
           []
         end
       end
@@ -62,8 +64,8 @@ module TestSummaryBuildkitePlugin
 
       def filename_to_failures(filename)
         file_contents_to_failures(read(filename)).each { |failure| failure.job_id = job_id(filename) }
-      rescue StandardError => err
-        handle_error(err)
+      rescue StandardError => e
+        handle_error(e)
         []
       end
 
@@ -75,6 +77,7 @@ module TestSummaryBuildkitePlugin
         if @options[:job_id_regex]
           r = Regexp.new(@options[:job_id_regex])
           raise 'Job id regex must have a job_id named capture' unless r.names.include?('job_id')
+
           r
         else
           DEFAULT_JOB_ID_REGEX
@@ -100,7 +103,7 @@ module TestSummaryBuildkitePlugin
       private
 
       def crop
-        @crop ||= OpenStruct.new(
+        @crop ||= CropRange.new(
           start: options.dig(:crop, :start) || 0,
           end: -1 - (options.dig(:crop, :end) || 0)
         )
@@ -144,7 +147,7 @@ module TestSummaryBuildkitePlugin
         elem = failure
         until elem.parent.nil?
           elem.attributes.each do |attr_name, attr_value|
-            acc["#{elem.name}.#{attr_name}".to_sym] = attr_value
+            acc[:"#{elem.name}.#{attr_name}"] = attr_value
           end
           elem = elem.parent
         end
@@ -162,7 +165,7 @@ module TestSummaryBuildkitePlugin
       def details(failure)
         if options.fetch(:details, true)
           # gets all text elements that are direct children (includes CDATA), and use the unescaped values
-          failure.texts.map(&:value).join('').strip
+          failure.texts.map(&:value).join.strip
         end
       end
 

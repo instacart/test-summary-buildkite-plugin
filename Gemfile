@@ -2,10 +2,9 @@
 
 source 'https://rubygems.org'
 
-gem 'bundler', '~> 2.3'
 gem 'haml'
-gem 'rexml'
 gem 'json'
+gem 'rexml'
 
 group :development, :test do
   gem 'rake', '~> 13.0'

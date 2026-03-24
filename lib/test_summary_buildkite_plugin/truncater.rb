@@ -19,6 +19,7 @@ module TestSummaryBuildkitePlugin
         # we can use it as-is, no need to truncate
         return requested
       end
+
       puts "Markdown is too large (#{requested.bytesize} B > #{max_size} B), truncating"
 
       # See http://ruby-doc.org/core/Array.html#method-i-bsearch
@@ -35,6 +36,7 @@ module TestSummaryBuildkitePlugin
         # so ask the user to let us know
         return bug_report_message
       end
+
       puts "Optimal truncation: #{best_truncate}"
       markdown_with_truncation(best_truncate)
     end
@@ -42,7 +44,7 @@ module TestSummaryBuildkitePlugin
     private
 
     def formatter(truncate)
-      @_formatter[truncate] ||= Formatter.create(**formatter_opts.merge(truncate: truncate))
+      @_formatter[truncate] ||= Formatter.create(**formatter_opts, truncate: truncate)
     end
 
     def input_markdown(input, truncate = nil)
@@ -67,7 +69,7 @@ module TestSummaryBuildkitePlugin
     def bug_report_message
       puts
       puts 'Optimization failed 😱'
-      puts 'Please report this to https://github.com/bugcrowd/test-summary-buildkite-plugin/issues'
+      puts 'Please report this to https://github.com/instacart/test-summary-buildkite-plugin/issues'
       puts 'with the test log above and the details below.'
       puts JSON.pretty_generate(diagnostics)
       HamlRender.render('truncater_exception', {})

@@ -10,6 +10,7 @@ module TestSummaryBuildkitePlugin
 
     class << self
       extend Forwardable
+
       def_delegators :instance, :run
     end
 
@@ -29,7 +30,7 @@ module TestSummaryBuildkitePlugin
     end
 
     def log(args, stdin: nil)
-      puts('$ buildkite-agent ' + args.join(' '))
+      puts("$ buildkite-agent #{args.join(' ')}")
       if stdin
         puts('# with stdin:')
         puts(stdin)
